@@ -1,0 +1,1 @@
+# CosmWasm Smart Contract
