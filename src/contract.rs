@@ -1,10 +1,10 @@
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
-use cosmwasm_std::{to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
+use cosmwasm_std::{DepsMut, Env, MessageInfo, Response};
 use cw2::set_contract_version;
 
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg, TextResponse};
+use crate::msg::{ExecuteMsg, InstantiateMsg};
 use crate::state::{State, STATE};
 
 const CONTRACT_NAME: &str = "crates.io:cw-contract";
@@ -39,11 +39,11 @@ pub fn execute(
   msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
   match msg {
-    ExecuteMsg::Write { text } => try_set_greeting(deps, info, text),
+    ExecuteMsg::Write { text } => set_text(deps, info, text),
   }
 }
 
-pub fn try_set_greeting(
+pub fn set_text(
   deps: DepsMut,
   info: MessageInfo,
   text: String,
@@ -55,5 +55,5 @@ pub fn try_set_greeting(
     state.text = text.clone();
     Ok(state)
   })?;
-  Ok(Response::new().add_attribute("method", "reset"))
+  Ok(Response::new().add_attribute("method", "set_text"))
 }
